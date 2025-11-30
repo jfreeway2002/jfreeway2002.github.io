@@ -906,9 +906,23 @@
     </div>
   </footer>
 
-  <script>
+   <script>
     // Set current year in footer
     document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Simple visit counter using countapi.xyz
+    // This increments a shared counter every time someone loads the site.
+    fetch("https://api.countapi.xyz/hit/bigguy-tech.com/visits")
+      .then(response => response.json())
+      .then(data => {
+        const el = document.getElementById("visit-count");
+        if (el) {
+          el.textContent = data.value.toLocaleString();
+        }
+      })
+      .catch(err => {
+        console.error("Visit counter error:", err);
+      });
   </script>
 </body>
 </html>
