@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Big Guy Tech</title>
+  <style>
+    :root {
+      --bg: #050816;
+      --bg-alt: #0b1020;
+      --accent: #3b82f6;
+      --accent-soft: rgba(59,130,246,0.15);
+      --text: #f9fafb;
+      --muted: #9ca3af;
+      --card: #111827;
+      --border: #1f2933;
+      --radius-lg: 18px;
+      --radius-xl: 24px;
+      --shadow-soft: 0 20px 45px rgba(0,0,0,0.6);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at top, #111827 0, #020617 45%, #000 100%);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* Layout */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(16px);
+      background: linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(0,0,0,0.4));
+      border-bottom: 1px solid rgba(148,163,184,0.2);
+    }
+
+    .nav-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0.75rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .logo-mark {
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 0, #60a5fa, #1d4ed8 45%, #020617 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1.1rem;
+      box-shadow: 0 0 30px rgba(59,130,246,0.6);
+    }
+
+    .logo-text-main {
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      font-size: 1.05rem;
+    }
+
+    .logo-text-sub {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 1.25rem;
+      font-size: 0.9rem;
+    }
+
+    nav a {
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+      color: var(--muted);
+      transition: all 0.18s ease;
+    }
+
+    nav a:hover {
+      color: var(--text);
+      background: rgba(15,23,42,0.9);
+    }
+
+    .nav-cta {
+      padding: 0.45rem 1rem;
+      border-radius: 999px;
+      border: 1px solid rgba(59,130,246,0.6);
+      color: var(--text);
+      background: radial-gradient(circle at top left, rgba(59,130,246,0.5), rgba(15,23,42,0.95));
+      font-size: 0.85rem;
+      font-weight: 600;
+      box-shadow: 0 0 25px rgba(59,130,246,0.3);
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2.5rem 1.25rem 3.5rem;
+    }
+
+    section {
+      margin-bottom: 4rem;
+    }
+
+    /* Hero */
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2.75fr);
+      gap: 2.5rem;
+      align-items: center;
+      margin-top: 1.75rem;
+    }
+
+    .hero-kicker {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--muted);
+      margin-bottom: 0.75rem;
+    }
+
+    h1 {
+      font-size: clamp(2.25rem, 3.2vw + 1.5rem, 3.4rem);
+      line-height: 1.1;
+      margin-bottom: 0.9rem;
+    }
+
+    h1 span.highlight {
+      background: linear-gradient(to right, #60a5fa, #a855f7, #ec4899);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .hero-subtitle {
+      color: var(--muted);
+      max-width: 30rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.96rem;
+    }
+
+    .hero-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .badge {
+      padding: 0.4rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.4);
+      background: rgba(15,23,42,0.85);
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      border-radius: 999px;
+      padding: 0.6rem 1.4rem;
+      border: none;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(to right, #2563eb, #4f46e5);
+      box-shadow: 0 15px 35px rgba(59,130,246,0.55);
+      color: #f9fafb;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 20px 45px rgba(59,130,246,0.8);
+    }
+
+    .btn-secondary {
+      background: rgba(15,23,42,0.95);
+      border: 1px solid rgba(148,163,184,0.4);
+      color: var(--muted);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(15,23,42,1);
+      transform: translateY(-1px);
+    }
+
+    .hero-note {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    /* Hero "device" card */
+    .hero-card {
+      position: relative;
+      border-radius: var(--radius-xl);
+      background: radial-gradient(circle at top left, rgba(59,130,246,0.3), rgba(15,23,42, 0.95));
+      padding: 1.5rem;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(148,163,184,0.4);
+      overflow: hidden;
+    }
+
+    .hero-card-glow {
+      position: absolute;
+      inset: -40%;
+      background: radial-gradient(circle at 20% 0, rgba(96,165,250,0.45), transparent 55%);
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .hero-card-inner {
+      position: relative;
+    }
+
+    .hero-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .status-pill {
+      padding: 0.25rem 0.55rem;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.9);
+      border: 1px solid rgba(74,222,128, 0.7);
+      color: #bbf7d0;
+      font-size: 0.7rem;
+    }
+
+    .device-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .device-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: var(--radius-lg);
+      padding: 0.65rem 0.75rem;
+      background: rgba(15,23,42,0.9);
+      border: 1px solid rgba(148,163,184,0.35);
+    }
+
+    .device-main {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+
+    .device-name {
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    .device-issue {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .device-tag {
+      font-size: 0.7rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 999px;
+      background: rgba(37,99,235,0.25);
+      border: 1px solid rgba(59,130,246,0.75);
+    }
+
+    .hero-card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .hero-card-meter {
+      height: 5px;
+      flex: 1;
+      margin-left: 0.75rem;
+      border-radius: 999px;
+      background: rgba(15,23,42,1);
+      overflow: hidden;
+    }
+
+    .hero-card-meter-fill {
+      height: 100%;
+      width: 78%;
+      background: linear-gradient(to right, #22c55e, #4ade80, #a3e635);
+    }
+
+    /* Sections */
+    .section-title {
+      font-size: 1.7rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .section-subtitle {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.4rem;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: var(--radius-lg);
+      padding: 1.1rem 1.15rem;
+      border: 1px solid var(--border);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    }
+
+    .card h3 {
+      font-size: 1.02rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .card p {
+      font-size: 0.86rem;
+      color: var(--muted);
+    }
+
+    .pill-row {
+      margin-top: 0.75rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .pill {
+      font-size: 0.7rem;
+      padding: 0.25rem 0.55rem;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.3);
+      color: var(--muted);
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 2.2fr) minmax(0, 2fr);
+      gap: 2rem;
+      align-items: start;
+    }
+
+    .about-text p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 0.75rem;
+    }
+
+    .about-stats {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+    }
+
+    .stat {
+      background: rgba(15,23,42,0.95);
+      border-radius: var(--radius-lg);
+      padding: 0.8rem;
+      border: 1px solid var(--border);
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .stat strong {
+      display: block;
+      color: var(--text);
+      font-size: 1.1rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .hours-card {
+      background: rgba(15,23,42,0.95);
+      border-radius: var(--radius-lg);
+      padding: 1rem;
+      border: 1px solid rgba(148,163,184,0.35);
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .hours-card table {
+      width: 100%;
+      margin-top: 0.35rem;
+      border-collapse: collapse;
+    }
+
+    .hours-card td {
+      padding: 0.12rem 0;
+    }
+
+    .hours-card td:first-child {
+      color: var(--text);
+    }
+
+    /* Contact */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1.5fr);
+      gap: 2.25rem;
+      align-items: start;
+    }
+
+    form {
+      background: rgba(15,23,42,0.98);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem 1.35rem;
+      border: 1px solid rgba(148,163,184,0.35);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.7);
+    }
+
+    .form-row {
+      margin-bottom: 0.75rem;
+    }
+
+    label {
+      display: block;
+      font-size: 0.8rem;
+      margin-bottom: 0.2rem;
+      color: var(--muted);
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 0.6rem 0.7rem;
+      border-radius: 0.75rem;
+      border: 1px solid rgba(55,65,81,0.9);
+      background: #020617;
+      color: var(--text);
+      font-size: 0.86rem;
+      outline: none;
+      transition: border 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(59,130,246,0.5);
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .contact-side {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .contact-side h3 {
+      color: var(--text);
+      margin-bottom: 0.5rem;
+      font-size: 1.05rem;
+    }
+
+    .contact-list {
+      list-style: none;
+      margin-top: 0.9rem;
+    }
+
+    .contact-list li {
+      margin-bottom: 0.55rem;
+      font-size: 0.87rem;
+    }
+
+    .contact-label {
+      display: inline-block;
+      min-width: 70px;
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid rgba(30,41,59,0.9);
+      padding: 1.25rem 1.25rem 2.5rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    footer .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 880px) {
+      nav ul {
+        display: none;
+      }
+
+      .hero {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .hero-card {
+        order: -1;
+      }
+
+      .card-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .about-grid,
+      .contact-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    @media (max-width: 640px) {
+      main {
+        padding-inline: 1rem;
+      }
+
+      .card-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .nav-container {
+        padding-inline: 1rem;
+      }
+
+      section {
+        margin-bottom: 3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <header>
+    <div class="nav-container">
+      <div class="logo">
+        <div class="logo-mark">B</div>
+        <div>
+          <div class="logo-text-main">Big Guy Tech</div>
+          <div class="logo-text-sub">Computer Repair & Tech Support</div>
+        </div>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#reviews">Reviews</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a class="nav-cta" href="#contact">Book a Repair</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main>
+    <!-- HERO -->
+    <section class="hero" id="top">
+      <div>
+        <div class="hero-kicker">Local • Friendly • Reliable</div>
+        <h1>
+          Big Guy Tech
+          <span class="highlight">keeps your tech working right.</span>
+        </h1>
+        <p class="hero-subtitle">
+          Desktop and laptop repair, game console cleaning, and home/small-business tech support.
+          Straightforward fixes, honest advice, and no tech talk you can’t understand.
+        </p>
+
+        <div class="hero-badges">
+          <span class="badge">PC & laptop repair</span>
+          <span class="badge">Game console cleaning</span>
+          <span class="badge">Home & small business support</span>
+        </div>
+
+        <div class="hero-actions">
+          <a href="#contact" class="btn-primary">
+            📞 Call or message Big Guy Tech
+          </a>
+          <a href="#services" class="btn-secondary">
+            🔧 View services
+          </a>
+        </div>
+
+        <div class="hero-note">
+          Call <strong>1 740-692-5871</strong> or send a message —
+          most problems are fixed within 24–72 hours.
+        </div>
+      </div>
+
+      <aside class="hero-card">
+        <div class="hero-card-glow"></div>
+        <div class="hero-card-inner">
+          <div class="hero-card-header">
+            <span>Big Guy Tech Repair Queue</span>
+            <span class="status-pill">Open & accepting devices</span>
+          </div>
+          <div class="device-list">
+            <div class="device-item">
+              <div class="device-main">
+                <span class="device-name">Gaming PC • Custom build</span>
+                <span class="device-issue">Blue screens while playing &amp; random restarts</span>
+              </div>
+              <span class="device-tag">Diagnostics running</span>
+            </div>
+            <div class="device-item">
+              <div class="device-main">
+                <span class="device-name">Work Laptop • Windows 10</span>
+                <span class="device-issue">Super slow &amp; full storage</span>
+              </div>
+              <span class="device-tag">SSD + cleanup</span>
+            </div>
+            <div class="device-item">
+              <div class="device-main">
+                <span class="device-name">Game Console • Xbox / PlayStation</span>
+                <span class="device-issue">Overheating, loud fans, and random shutdowns</span>
+              </div>
+              <span class="device-tag">Deep clean &amp; fresh thermal paste</span>
+            </div>
+          </div>
+          <div class="hero-card-footer">
+            <span>Avg. repair time: <strong>1–3 days</strong></span>
+            <div class="hero-card-meter">
+              <div class="hero-card-meter-fill"></div>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <!-- SERVICES -->
+    <section id="services">
+      <h2 class="section-title">Services</h2>
+      <p class="section-subtitle">
+        If it plugs in, boots up, or connects to Wi-Fi, Big Guy Tech can probably help.
+      </p>
+
+      <div class="card-grid">
+        <article class="card">
+          <h3>Computer, Laptop & Console Repair</h3>
+          <p>
+            Diagnostics, cleanup, virus removal, part replacement, and fresh installs of Windows —
+            plus deep cleaning and overheating fixes for game consoles like Xbox, PlayStation, and Nintendo systems.
+            Get your gear running cool, quiet, and stable again.
+          </p>
+          <div class="pill-row">
+            <span class="pill">PC & laptop tune-ups</span>
+            <span class="pill">Game console cleaning</span>
+            <span class="pill">Overheating & fan issues</span>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3>Upgrades & Custom Builds</h3>
+          <p>
+            RAM and SSD upgrades, graphics card installs, and full custom PC builds matched to your games or workload.
+          </p>
+          <div class="pill-row">
+            <span class="pill">Gaming builds</span>
+            <span class="pill">SSD & RAM</span>
+            <span class="pill">Performance tuning</span>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3>Home & Small Business Support</h3>
+          <p>
+            Wi-Fi troubleshooting, router setup, basic security, and simple backup plans so your tech works when you need it.
+          </p>
+          <div class="pill-row">
+            <span class="pill">Wi-Fi fixes</span>
+            <span class="pill">Basic security</span>
+            <span class="pill">Backups</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <h2 class="section-title">About Big Guy Tech</h2>
+      <p class="section-subtitle">
+        Local, down-to-earth tech help — not a big box store.
+      </p>
+
+      <div class="about-grid">
+        <div class="about-text">
+          <p>
+            Big Guy Tech is all about making computers, consoles, and tech less stressful. You get clear explanations, fair prices,
+            and realistic advice about whether to repair or replace.
+          </p>
+          <p>
+            From everyday home users to small businesses that rely on their systems, the goal is simple:
+            keep your gear running right and get you back to what you actually want to be doing.
+          </p>
+
+          <div class="about-stats">
+            <div class="stat">
+              <strong>Hundreds</strong>
+              of systems cleaned, repaired, and brought back to life.
+            </div>
+            <div class="stat">
+              <strong>1–3 days</strong>
+              typical turnaround on most common repairs.
+            </div>
+            <div class="stat">
+              <strong>Honest</strong>
+              recommendations on when fixing isn’t worth the money.
+            </div>
+            <div class="stat">
+              <strong>Flexible</strong>
+              communication by phone, text, email, or message.
+            </div>
+            <div class="stat">
+              <strong id="visit-count">…</strong>
+              total visits to this website.
+            </div>
+          </div>
+        </div>
+
+        <aside class="hours-card">
+          <strong>Hours</strong>
+          <table>
+            <tr><td>Mon–Fri</td><td>7:00 AM – 5:00 PM</td></tr>
+            <tr><td>Saturday</td><td>By appointment</td></tr>
+            <tr><td>Sunday</td><td>Closed</td></tr>
+          </table>
+          <p style="margin-top:0.7rem;">
+            Need a different time? Call or email and Big Guy Tech will work with your schedule when possible.
+          </p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- REVIEWS -->
+    <section id="reviews">
+      <h2 class="section-title">Reviews</h2>
+      <p class="section-subtitle">
+        Here’s what people are saying about Big Guy Tech — and how you can leave your own review.
+      </p>
+
+      <div class="card-grid">
+        <article class="card">
+          <h3>“Fast and friendly”</h3>
+          <p>
+            Big Guy Tech got my laptop cleaned up and running faster than it has in years.
+            Super friendly and explained everything in plain English.
+          </p>
+          <div class="pill-row">
+            <span class="pill">Laptop cleanup</span>
+            <span class="pill">Home user</span>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3>“Saved my work PC”</h3>
+          <p>
+            Thought I’d have to buy a new computer, but he upgraded the storage and
+            moved everything over. Way cheaper than a new machine.
+          </p>
+          <div class="pill-row">
+            <span class="pill">SSD upgrade</span>
+            <span class="pill">Small business</span>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3>Leave a review</h3>
+          <p>
+            Have we fixed your tech, built a PC, cleaned a console, or brought a slow system back to life?
+            Your feedback really helps other people know who to trust with their gear.
+          </p>
+          <div class="pill-row">
+            <span class="pill">Word of mouth</span>
+            <span class="pill">Local support</span>
+          </div>
+          <div style="margin-top:0.9rem;">
+            <a href="mailto:Bigguytech@outlook.com?subject=Big%20Guy%20Tech%20Review"
+               class="btn-secondary">
+              ✍️ Email your review
+            </a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <h2 class="section-title">Contact</h2>
+      <p class="section-subtitle">
+        Tell Big Guy Tech what’s going on and get a quick reply with options and pricing.
+      </p>
+
+      <div class="contact-grid">
+        <form action="mailto:Bigguytech@outlook.com" method="post" enctype="text/plain">
+          <div class="form-row">
+            <label for="name">Name</label>
+            <input id="name" name="name" type="text" placeholder="Your name" required />
+          </div>
+
+          <div class="form-row">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" placeholder="you@example.com" required />
+          </div>
+
+          <div class="form-row">
+            <label for="phone">Phone (optional)</label>
+            <input id="phone" name="phone" type="tel" placeholder="Your phone number" />
+          </div>
+
+          <div class="form-row">
+            <label for="issue">What’s going on?</label>
+            <textarea id="issue" name="issue" placeholder="Describe the problem, device, and anything you’ve tried so far." required></textarea>
+          </div>
+
+          <button class="btn-primary" type="submit">
+            ✉️ Email Big Guy Tech
+          </button>
+        </form>
+
+        <div class="contact-side">
+          <h3>Reach Big Guy Tech directly</h3>
+          <p>
+            Prefer to call or message? Use whatever’s easiest. If there’s no answer right away, leave a message and
+            you’ll get a call back.
+          </p>
+
+          <ul class="contact-list">
+            <li><span class="contact-label">Phone:</span> 1 740-692-5871</li>
+            <li><span class="contact-label">Email:</span> Bigguytech@outlook.com</li>
+          </ul>
+
+          <p style="margin-top:0.9rem;">
+            You can also send photos or screenshots of error messages or overheating/console issues
+            to help get a more accurate estimate.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <span>© <span id="year"></span> Big Guy Tech. All rights reserved.</span>
+      <span>Built for everyday people who just want their tech to work.</span>
+    </div>
+  </footer>
+
+  <script>
+    // Set current year in footer
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Simple visit counter using countapi.xyz
+    fetch("https://api.countapi.xyz/hit/bigguy-tech.com/visits")
+      .then(response => response.json())
+      .then(data => {
+        const el = document.getElementById("visit-count");
+        if (el && data && typeof data.value === "number") {
+          el.textContent = data.value.toLocaleString();
+        }
+      })
+      .catch(err => {
+        console.error("Visit counter error:", err);
+      });
+  </script>
+</body>
+</html>
